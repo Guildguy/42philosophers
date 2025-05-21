@@ -21,7 +21,7 @@ static void	*philo_create(void *arg)
 	philo = (t_philo *)arg;
 	right_fork = 0;
 	left_fork = 0;
-	while (1)
+	while (6)
 	{
 		if (should_stop(philo->data)
 			|| take_fork(philo, &left_fork, &right_fork))
