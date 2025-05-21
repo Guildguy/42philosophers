@@ -74,6 +74,6 @@ int		release_fork(t_philo *philo, unsigned int *left_fork,
 void	cleanup_fork(t_philo *philo, unsigned int *left_fork,
 			unsigned int *right_fork);
 ////philo_utils
-int		ft_strcmp(const char *s1, const char *s2);
 int		parse_args(t_data *data, int c, char *v[]);
+int		ft_strcmp(const char *s1, const char *s2);
 #endif

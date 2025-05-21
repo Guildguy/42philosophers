@@ -70,31 +70,6 @@ static void	init_philo(t_data *data)
 	}
 }
 
-int	philo_creation(t_data *data)
-{
-	unsigned int	i;
-
-	if (pthread_create(&data->monitor, NULL, monitor_routine, data) != 0)
-	{
-		printf("Error: failure to create the monitor thread!\n");
-		return (1);
-	}
-	i = 0;
-	while (i < data->nbr_of_philos)
-	{
-		if (pthread_create(&data->threads[i], NULL,
-				philo_create, &data->philos[i]) != 0)
-		{
-			printf("Error: failure to create thread n°: [%d]!\n", i + 1);
-			philo_wait(data);
-			return (1);
-		}
-		i++;
-	}
-	philo_wait(data);
-	return (0);
-}
-
 int	init_data(t_data *data, int c, char **v)
 {
 	if (parse_args(data, c, v))
@@ -117,5 +92,30 @@ int	init_data(t_data *data, int c, char **v)
 		free_all(data);
 		return (1);
 	}
+	return (0);
+}
+
+int	philo_creation(t_data *data)
+{
+	unsigned int	i;
+
+	if (pthread_create(&data->monitor, NULL, monitor_routine, data) != 0)
+	{
+		printf("Error: failure to create the monitor thread!\n");
+		return (1);
+	}
+	i = 0;
+	while (i < data->nbr_of_philos)
+	{
+		if (pthread_create(&data->threads[i], NULL,
+				philo_create, &data->philos[i]) != 0)
+		{
+			printf("Error: failure to create thread n°: [%d]!\n", i + 1);
+			philo_wait(data);
+			return (1);
+		}
+		i++;
+	}
+	philo_wait(data);
 	return (0);
 }

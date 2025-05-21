@@ -1,5 +1,5 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread #//dispara aviso que está ocorrendo uma condição de corrida a var global
+FLAGS = -Wall -Wextra -Werror -pthread
 
 SRC_DIR = src/
 OBJ_DIR = obj/

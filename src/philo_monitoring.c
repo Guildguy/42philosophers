@@ -12,24 +12,11 @@
 
 #include "../philo.h"
 
-int	should_stop(t_data *data)
-{
-	int	stop;
-
-	pthread_mutex_lock(&data->dead_mutex);
-	stop = data->is_dead;
-	if (!stop)
-		stop = data->ate_enough;
-	pthread_mutex_unlock(&data->dead_mutex);
-	return (stop);
-}
-
 static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 {
 	long			last_meal;
 	unsigned long	timestamp;
 
-	//colocar func should_stop()
 	pthread_mutex_lock(&data->dead_mutex);
 	if (data->is_dead || data->ate_enough)
 	{
@@ -51,6 +38,18 @@ static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 		*meals_done = 0;
 	pthread_mutex_unlock(&data->dead_mutex);
 	return (0);
+}
+
+int	should_stop(t_data *data)
+{
+	int	stop;
+
+	pthread_mutex_lock(&data->dead_mutex);
+	stop = data->is_dead;
+	if (!stop)
+		stop = data->ate_enough;
+	pthread_mutex_unlock(&data->dead_mutex);
+	return (stop);
 }
 
 void	*monitor_routine(void *arg)
