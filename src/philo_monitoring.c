@@ -29,6 +29,7 @@ static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 	long			last_meal;
 	unsigned long	timestamp;
 
+	//colocar func should_stop()
 	pthread_mutex_lock(&data->dead_mutex);
 	if (data->is_dead || data->ate_enough)
 	{
@@ -80,38 +81,3 @@ void	*monitor_routine(void *arg)
 	}
 	return (NULL);
 }
-/*
-void *monitor_routine(void *arg)
-{
-    t_data *data = (t_data *)arg;
-    unsigned int i;
-    unsigned int meals_done;
-
-    printf("Monitor thread started\n");
-    while (1)
-    {
-        i = 0;
-        meals_done = data->nbr_of_meals > 0;
-        while (i < data->nbr_of_philos)
-        {
-            if (philo_status(data, i, &meals_done))
-            {
-                printf("Monitor detected termination condition\n");
-                return (NULL);
-            }
-            i++;
-        }
-        if (meals_done && !data->is_dead)
-        {
-            pthread_mutex_lock(&data->dead_mutex);
-            data->ate_enough = 1;
-            printf("Monitor: all philosophers ate enough\n");
-            philo_behavior(&data->philos[0], "ate_enough");
-            pthread_mutex_unlock(&data->dead_mutex);
-            return (NULL);
-        }
-        usleep(100);
-    }
-    return (NULL);
-}
-*/

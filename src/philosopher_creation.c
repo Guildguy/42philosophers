@@ -40,7 +40,7 @@ static void	*philo_create(void *arg)
 	return (NULL);
 }
 
-void	philo_wait(t_data *data)
+static void	philo_wait(t_data *data)
 {
 	unsigned int	i;
 
@@ -53,6 +53,21 @@ void	philo_wait(t_data *data)
 	}
 	if (pthread_join(data->monitor, NULL) != 0)
 		printf("Error: failure in wait the monitor!\n");
+}
+
+static void	init_philo(t_data *data)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->nbr_of_philos)
+	{
+		data->philos[i].id = i + 1;
+		data->philos[i].data = data;
+		data->philos[i].last_meal = data->start_time;
+		data->philos[i].meals = 0;
+		i++;
+	}
 }
 
 int	philo_creation(t_data *data)
@@ -78,21 +93,6 @@ int	philo_creation(t_data *data)
 	}
 	philo_wait(data);
 	return (0);
-}
-
-static void	init_philo(t_data *data)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (i < data->nbr_of_philos)
-	{
-		data->philos[i].id = i + 1;
-		data->philos[i].data = data;
-		data->philos[i].last_meal = data->start_time;
-		data->philos[i].meals = 0;
-		i++;
-	}
 }
 
 int	init_data(t_data *data, int c, char **v)
