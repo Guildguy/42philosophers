@@ -17,17 +17,17 @@ static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 	long			last_meal;
 	unsigned long	timestamp;
 
-	pthread_mutex_lock(&data->dead_mutex);
+	pthread_mutex_lock(&data->state_mutex);
 	if (data->is_dead || data->ate_enough)
 	{
-		pthread_mutex_unlock(&data->dead_mutex);
+		pthread_mutex_unlock(&data->state_mutex);
 		return (1);
 	}
 	last_meal = data->philos[i].last_meal;
 	if (get_time() - last_meal >= data->time_to_die)
 	{
 		data->is_dead = 1;
-		pthread_mutex_unlock(&data->dead_mutex);
+		pthread_mutex_unlock(&data->state_mutex);
 		timestamp = get_time() - data->start_time;
 		pthread_mutex_lock(&data->print_mutex);
 		printf("%lu %u died\n", timestamp, data->philos[i].id);
@@ -36,7 +36,7 @@ static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 	}
 	if (*meals_done && data->philos[i].meals < data->nbr_of_meals)
 		*meals_done = 0;
-	pthread_mutex_unlock(&data->dead_mutex);
+	pthread_mutex_unlock(&data->state_mutex);
 	return (0);
 }
 
@@ -44,11 +44,11 @@ int	should_stop(t_data *data)
 {
 	int	stop;
 
-	pthread_mutex_lock(&data->dead_mutex);
+	pthread_mutex_lock(&data->state_mutex);
 	stop = data->is_dead;
 	if (!stop)
 		stop = data->ate_enough;
-	pthread_mutex_unlock(&data->dead_mutex);
+	pthread_mutex_unlock(&data->state_mutex);
 	return (stop);
 }
 
@@ -70,10 +70,10 @@ void	*monitor_routine(void *arg)
 		}
 		if (meals_done && !data->is_dead)
 		{
-			pthread_mutex_lock(&data->dead_mutex);
+			pthread_mutex_lock(&data->state_mutex);
 			data->ate_enough = 1;
 			philo_behavior(&data->philos[0], "ate_enough");
-			pthread_mutex_unlock(&data->dead_mutex);
+			pthread_mutex_unlock(&data->state_mutex);
 			return (NULL);
 		}
 		usleep(50);

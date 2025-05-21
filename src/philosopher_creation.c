@@ -12,7 +12,7 @@
 
 #include "../philo.h"
 
-static void	*philo_create(void *arg)
+static void	*philo_routine(void *arg)
 {
 	t_philo			*philo;
 	unsigned int	right_fork;
@@ -86,9 +86,9 @@ int	init_data(t_data *data, int c, char **v)
 		free_all(data);
 		return (1);
 	}
-	if (pthread_mutex_init(&data->dead_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->state_mutex, NULL) != 0)
 	{
-		printf("Error: failure to initialize dead_mutex!\n");
+		printf("Error: failure to initialize state_mutex!\n");
 		free_all(data);
 		return (1);
 	}
@@ -108,7 +108,7 @@ int	philo_creation(t_data *data)
 	while (i < data->nbr_of_philos)
 	{
 		if (pthread_create(&data->threads[i], NULL,
-				philo_create, &data->philos[i]) != 0)
+				philo_routine, &data->philos[i]) != 0)
 		{
 			printf("Error: failure to create thread n°: [%d]!\n", i + 1);
 			philo_wait(data);

@@ -46,7 +46,7 @@ typedef struct s_data
 	pthread_t		monitor;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
-	pthread_mutex_t	dead_mutex;
+	pthread_mutex_t	state_mutex;
 }				t_data;
 
 //src
