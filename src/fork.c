@@ -3,10 +3,9 @@
 static int	pair_philo(t_philo *philo, unsigned int *left_fork,
 	unsigned int *right_fork)
 {
-	pthread_mutex_lock
-		(&philo->data->forks[philo->id - 1]);
+	pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
 	*left_fork = 1;
-	if (behavior_prevention(philo, left_fork, right_fork))
+	if (should_stop(philo->data))
 		return (1);
 	if (philo_behavior(philo, "has taken a fork"))
 		return (1);
@@ -15,10 +14,12 @@ static int	pair_philo(t_philo *philo, unsigned int *left_fork,
 	pthread_mutex_lock(&philo->data->forks[philo->id
 		% philo->data->nbr_of_philos]);
 	*right_fork = 1;
-	if (behavior_prevention(philo, left_fork, right_fork))
+	if (should_stop(philo->data))
 		return (1);
 	if (philo_behavior(philo, "has taken a fork"))
+	{
 		return (1);
+	}
 	return (0);
 }
 
@@ -28,19 +29,20 @@ static int	odd_philo(t_philo *philo, unsigned int *left_fork,
 	pthread_mutex_lock(&philo->data->forks[philo->id
 		% philo->data->nbr_of_philos]);
 	*right_fork = 1;
-	if (behavior_prevention(philo, left_fork, right_fork))
+	if (should_stop(philo->data))
 		return (1);
 	if (philo_behavior(philo, "has taken a fork"))
 		return (1);
 	if (philo->data->nbr_of_philos == 1)
 		return (1);
-	pthread_mutex_lock
-		(&philo->data->forks[philo->id - 1]);
+	pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
 	*left_fork = 1;
-	if (behavior_prevention(philo, left_fork, right_fork))
+	if (should_stop(philo->data))
 		return (1);
 	if (philo_behavior(philo, "has taken a fork"))
+	{
 		return (1);
+	}
 	return (0);
 }
 

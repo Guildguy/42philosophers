@@ -45,9 +45,11 @@ int	behavior_prevention(t_philo *philo, unsigned int *left_fork,
 
 int	eat_time(t_philo *philo)
 {
-	unsigned int	left_fork = 0;
-	unsigned int	right_fork = 0;
+	unsigned int	left_fork;
+	unsigned int	right_fork;
 
+	left_fork = 0;
+	right_fork = 0;
 	if (philo_behavior(philo, "is eating"))
 		return (1);
 	pthread_mutex_lock(&philo->data->dead_mutex);

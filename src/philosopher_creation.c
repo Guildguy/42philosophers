@@ -1,5 +1,5 @@
 #include "../philo.h"
-
+/*
 static void	*philo_create(void *arg)
 {
 	t_philo			*philo;
@@ -20,6 +20,35 @@ static void	*philo_create(void *arg)
 		if (sleep_time(philo))
 			break ;
 		if (think_time(philo))
+			break ;
+	}
+	cleanup_fork(philo, &left_fork, &right_fork);
+	return (NULL);
+}
+*/
+
+static void	*philo_create(void *arg)
+{
+	t_philo			*philo;
+	unsigned int	right_fork;
+	unsigned int	left_fork;
+
+	philo = (t_philo *)arg;
+	right_fork = 0;
+	left_fork = 0;
+	while (1)
+	{
+		if (should_stop(philo->data)
+			|| take_fork(philo, &left_fork, &right_fork))
+			break ;
+		if (should_stop(philo->data) || eat_time(philo))
+			break ;
+		if (should_stop(philo->data)
+			|| release_fork(philo, &left_fork, &right_fork))
+			break ;
+		if (should_stop(philo->data) || sleep_time(philo))
+			break ;
+		if (should_stop(philo->data) || think_time(philo))
 			break ;
 	}
 	cleanup_fork(philo, &left_fork, &right_fork);

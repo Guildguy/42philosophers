@@ -7,7 +7,7 @@ long	get_time(void)
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
-
+/*
 void	safe_usleep(unsigned long duration, t_philo *philo)
 {
 	unsigned long	start;
@@ -23,6 +23,19 @@ void	safe_usleep(unsigned long duration, t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->data->dead_mutex);
+	}
+}*/
+
+void	safe_usleep(unsigned long duration, t_philo *philo)
+{
+	unsigned long		start;
+
+	start = get_time();
+	while (get_time() - start < duration)
+	{
+		usleep(100);
+		if (should_stop(philo->data))
+			return ;
 	}
 }
 

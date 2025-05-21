@@ -56,6 +56,7 @@ int		sleep_time(t_philo *philo);
 int		think_time(t_philo *philo);
 ////philo_monitoring
 void	*monitor_routine(void *arg);
+int		should_stop(t_data *data);
 ////fork
 int		take_fork(t_philo *philo, unsigned int *left_fork,
 			unsigned int *right_fork);
