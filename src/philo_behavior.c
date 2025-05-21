@@ -39,11 +39,6 @@ int	philo_behavior(t_philo *philo, char *action)
 
 int	eat_time(t_philo *philo)
 {
-	unsigned int	left_fork;
-	unsigned int	right_fork;
-
-	left_fork = 0;
-	right_fork = 0;
 	if (philo_behavior(philo, "is eating"))
 		return (1);
 	pthread_mutex_lock(&philo->data->dead_mutex);
@@ -56,8 +51,6 @@ int	eat_time(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->data->dead_mutex);
-	left_fork = 1;
-	right_fork = 1;
 	safe_usleep(philo->data->time_to_eat, philo);
 	return (0);
 }

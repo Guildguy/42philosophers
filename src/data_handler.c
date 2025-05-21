@@ -22,7 +22,7 @@ long	get_time(void)
 
 void	safe_usleep(unsigned long duration, t_philo *philo)
 {
-	unsigned long		start;
+	unsigned long	start;
 
 	start = get_time();
 	while (get_time() - start < duration)
@@ -51,7 +51,7 @@ int	create_resources(t_data *data)
 	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
-			while (--i >= 0)
+			while (--i > 0)
 				pthread_mutex_destroy(&data->forks[i]);
 			free_all(data);
 			return (1);
