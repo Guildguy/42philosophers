@@ -1,0 +1,86 @@
+#include "../philo.h"
+
+int	philo_behavior(t_philo *philo, char *action)
+{
+	unsigned long	timestamp;
+
+	if (!ft_strcmp(action, "ate_enough"))
+	{
+		pthread_mutex_lock(&philo->data->print_mutex);
+		printf("Philosophers ate %u times!\n", philo->data->nbr_of_meals);
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		return (0);
+	}
+	pthread_mutex_lock(&philo->data->dead_mutex);
+	timestamp = get_time() - philo->data->start_time;
+	pthread_mutex_lock(&philo->data->print_mutex);
+	printf("%lu %u %s\n", timestamp, philo->id, action);
+	pthread_mutex_unlock(&philo->data->print_mutex);
+	if (philo->data->is_dead || philo->data->ate_enough)
+	{
+		pthread_mutex_unlock(&philo->data->dead_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->dead_mutex);
+	return (0);
+}
+
+int	behavior_prevention(t_philo *philo, unsigned int *left_fork,
+		unsigned int *right_fork)
+{
+	pthread_mutex_lock(&philo->data->dead_mutex);
+	if (philo->data->is_dead || philo->data->ate_enough)
+	{
+		if (*left_fork)
+			pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
+		if (*right_fork)
+			pthread_mutex_unlock(&philo->data->forks[philo->id
+				% philo->data->nbr_of_philos]);
+		pthread_mutex_unlock(&philo->data->dead_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->dead_mutex);
+	return (0);
+}
+
+int	eat_time(t_philo *philo)
+{
+	unsigned int	left_fork = 0;
+	unsigned int	right_fork = 0;
+
+	if (philo_behavior(philo, "is eating"))
+		return (1);
+	pthread_mutex_lock(&philo->data->dead_mutex);
+	philo->last_meal = get_time();
+	philo->meals++;
+	if (philo->data->is_dead || philo->data->ate_enough)
+	{
+		pthread_mutex_unlock(&philo->data->dead_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->dead_mutex);
+	left_fork = 1;
+	right_fork = 1;
+	safe_usleep(philo->data->time_to_eat, philo);
+	return (0);
+}
+
+int	sleep_time(t_philo *philo)
+{
+	if (philo_behavior(philo, "is sleeping"))
+		return (1);
+	pthread_mutex_lock(&philo->data->dead_mutex);
+	if (philo->data->is_dead || philo->data->ate_enough)
+	{
+		pthread_mutex_unlock(&philo->data->dead_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->data->dead_mutex);
+	safe_usleep(philo->data->time_to_sleep, philo);
+	return (0);
+}
+
+int	think_time(t_philo *philo)
+{
+	return (philo_behavior(philo, "is thinking"));
+}
