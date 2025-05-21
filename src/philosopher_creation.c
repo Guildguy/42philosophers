@@ -1,31 +1,16 @@
-#include "../philo.h"
-/*
-static void	*philo_create(void *arg)
-{
-	t_philo			*philo;
-	unsigned int	right_fork;
-	unsigned int	left_fork;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosopher_creation.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fleite-j <fleite-j@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-05-21 03:42:48 by fleite-j          #+#    #+#             */
+/*   Updated: 2025-05-21 03:42:48 by fleite-j         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-	right_fork = 0;
-	left_fork = 0;
-	philo = (t_philo *)arg;
-	while (6)
-	{
-		if (take_fork(philo, &left_fork, &right_fork))
-			break ;
-		if (eat_time(philo))
-			break ;
-		if (release_fork(philo, &left_fork, &right_fork))
-			break ;
-		if (sleep_time(philo))
-			break ;
-		if (think_time(philo))
-			break ;
-	}
-	cleanup_fork(philo, &left_fork, &right_fork);
-	return (NULL);
-}
-*/
+#include "../philo.h"
 
 static void	*philo_create(void *arg)
 {
