@@ -44,13 +44,9 @@ int	eat_time(t_philo *philo)
 	pthread_mutex_lock(&philo->data->dead_mutex);
 	philo->last_meal = get_time();
 	philo->meals++;
-	//colocar func should_stop()
-	if (philo->data->is_dead || philo->data->ate_enough)
-	{
-		pthread_mutex_unlock(&philo->data->dead_mutex);
-		return (1);
-	}
 	pthread_mutex_unlock(&philo->data->dead_mutex);
+	if (should_stop(philo->data))
+		return (1);
 	safe_usleep(philo->data->time_to_eat, philo);
 	return (0);
 }
@@ -59,14 +55,8 @@ int	sleep_time(t_philo *philo)
 {
 	if (philo_behavior(philo, "is sleeping"))
 		return (1);
-	pthread_mutex_lock(&philo->data->dead_mutex);
-	//colocar func should_stop()
-	if (philo->data->is_dead || philo->data->ate_enough)
-	{
-		pthread_mutex_unlock(&philo->data->dead_mutex);
+	if (should_stop(philo->data))
 		return (1);
-	}
-	pthread_mutex_unlock(&philo->data->dead_mutex);
 	safe_usleep(philo->data->time_to_sleep, philo);
 	return (0);
 }
