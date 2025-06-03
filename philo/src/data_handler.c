@@ -27,7 +27,7 @@ void	safe_usleep(unsigned long duration, t_philo *philo)
 	start = get_time();
 	while (get_time() - start < duration)
 	{
-		usleep(100);
+		usleep(5);
 		if (should_stop(philo->data))
 			return ;
 	}

@@ -24,14 +24,14 @@ static int	philo_status(t_data *data, unsigned int i, unsigned int *meals_done)
 		return (1);
 	}
 	last_meal = data->philos[i].last_meal;
-	if (get_time() - last_meal >= data->time_to_die)
+	if (get_time() - last_meal >= data->time_to_die + 6)
 	{
 		data->is_dead = 1;
-		pthread_mutex_unlock(&data->state_mutex);
 		timestamp = get_time() - data->start_time;
 		pthread_mutex_lock(&data->print_mutex);
 		printf("%lu %u died\n", timestamp, data->philos[i].id);
 		pthread_mutex_unlock(&data->print_mutex);
+		pthread_mutex_unlock(&data->state_mutex);
 		return (1);
 	}
 	if (*meals_done && data->philos[i].meals < data->nbr_of_meals)
@@ -76,7 +76,7 @@ void	*monitor_routine(void *arg)
 			pthread_mutex_unlock(&data->state_mutex);
 			return (NULL);
 		}
-		usleep(50);
+		usleep(5);
 	}
 	return (NULL);
 }

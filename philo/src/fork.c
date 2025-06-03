@@ -64,7 +64,10 @@ int	take_fork(t_philo *philo, unsigned int *left_fork,
 	if (philo->id % 2 == 0)
 		return (pair_philo(philo, left_fork, right_fork));
 	else
+	{
+		safe_usleep(5, philo);
 		return (odd_philo(philo, left_fork, right_fork));
+	}
 }
 
 int	release_fork(t_philo *philo, unsigned int *left_fork,
